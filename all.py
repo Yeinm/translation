@@ -114,7 +114,7 @@ print('output_lang', output_lang.n_words)
 def tensorFromSentence(lang, sentence):
     indexes = [lang.word2index[word] for word in sentence.split(' ')]
     indexes.append(EOS_token)
-    return torch.tensor(indexes, dtype=torch.long).view(-1, 1)
+    return torch.tensor(indexes, dtype=torch.long, device=device).view(-1, 1)
 
 def tensorsFromPair(pair):
     input_tensor = tensorFromSentence(input_lang, pair[0])
@@ -194,11 +194,11 @@ class AttnDecoderRNN(nn.Module):
 hidden_size = 25
 output_size = 10
 
-input= pair_tensor[1][0]
-hidden= torch.zeros(1, 1, hidden_size)
-encoder_outputs= torch.randn(10,25)
+input= pair_tensor[1][0].to(device)
+hidden= torch.zeros(1, 1, hidden_size).to(device)
+encoder_outputs= torch.randn(10,25).to(device)
 
-decoder= AttnDecoderRNN(hidden_size, output_size)
+decoder= AttnDecoderRNN(hidden_size, output_size).to(device)
 output, hidden, attention_weights= decoder(input, hidden, encoder_outputs)
 print(output)
 
@@ -294,8 +294,16 @@ def trainIters(encoder, decoder, n_iters, print_every=1000, plot_every=100, lear
 hidden_size = 256
 encoder1= EncoderRNN(input_lang.n_words, hidden_size).to(device)
 attn_decoder1 = AttnDecoderRNN(hidden_size, output_lang.n_words, dropout_p=0.1).to(device)
-n_iters= 5000
-print_every =500
+n_iters= 2000
+print_every =200
+'''
+attention_weights=attention_weights.to(device)
+encoder_outputs=encoder_outputs.to(device)
+hidden=hidden.to(device)
+input=input.to(device)
+output=output.to(device)
+'''
+
 
 #这里调用不明白为什么会报错,明明张量都在同一个设备上了
 trainIters(encoder1, attn_decoder1, n_iters, print_every=print_every)
