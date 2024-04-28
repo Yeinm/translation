@@ -1,5 +1,6 @@
 这个是黑马程序员nlp自然语言处理的代码，原视频中的代码有问题，目前这个已经修改过，单文件直接一键运行
-视频地址：https://www.bilibili.com/video/BV17y4y1m737（p123-p148的内容）已经包含数据集在内，适合新手学习
+视频地址：https://www.bilibili.com/video/BV17y4y1m737（p123-p148的内容）
+已经包含数据集在内，适合新手学习
 
 关联
 - **深度学习** (Deep Learning)
